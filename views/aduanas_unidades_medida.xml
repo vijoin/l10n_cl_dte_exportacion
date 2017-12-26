@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="unidades_medida_view_form" model="ir.ui.view">
+    <field name="name">unidades_medida.form</field>
+    <field name="model">aduanas.unidades_medida</field>
+    <field name="arch" type="xml">
+      <form string="Unidades de Medida">
+        <sheet>
+          <group>
+            <field name="name" />
+            <field name="codigo_arancelario" />
+            <field name="descripcion" />
+            <field name="sigla" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_exportacion_invoice_form" model="ir.ui.view">
+            <field name="model">account.invoice</field>
+            <field name="name">account.invoice.exportacion.form</field>
+            <field name="inherit_id" ref="l10n_cl_invoice.view_invoice_form" />
+            <field name="arch" type="xml">
+                <notebook>
+                    <page string="Datos de Exportación" name="exportacion" >
+                      <header>
+                        <button name="crear_exportacion" type="object" string="Crear Exportación" />
+                      </header>
+                        <group>
+                          <field name="exportacion" />
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</openerp>
