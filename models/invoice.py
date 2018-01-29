@@ -38,6 +38,8 @@ class Exportacion(models.Model):
         inverse_name="invoice_id",
         context={"form_view_ref": "l10n_cl_exportacion.exportacion_view_form"},
         help="Explain your field.",
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     def format_vat(self, value, con_cero=False):
