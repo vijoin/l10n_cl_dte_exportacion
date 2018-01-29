@@ -40,12 +40,17 @@ class Exportacion(models.Model):
         help="Explain your field.",
     )
 
+    def format_vat(self, value, con_cero=False):
+        if self._es_exportacion() and not value or value=='' or value == 0:
+            value = "CL555555555"
+        return super(Exportacion, self).format_vat(value, con_cero)
+
     @api.multi
     def crear_exportacion(self):
         self.exportacion = [(5),(0,0,{'invoice_id':self.id})]
 
     def _es_exportacion(self):
-        if self.document_class_id.sii_code in [ 110, 111, 112 ]:
+        if self.sii_document_class_id.sii_code in [ 110, 111, 112 ]:
             return True
         return False
 
