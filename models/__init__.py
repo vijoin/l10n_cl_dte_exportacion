@@ -10,4 +10,3 @@ from . import aduanas_unidades_medida
 from . import invoice_exportacion
 from . import invoice
 from . import payment_terms
-from . import res_currency
