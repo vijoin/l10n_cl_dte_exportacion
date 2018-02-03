@@ -4,6 +4,15 @@ from openerp import fields, models, api, _
 class Exportacion(models.Model):
     _name = "account.invoice.exportacion"
 
+    @api.depends('bultos')
+    @api.onchange('bultos')
+    def total_bultos(self):
+        for r in self:
+            tot_bultos = 0
+            for b in r.bultos:
+                tot_bultos += b.cantidad_bultos
+            r.total_bultos = tot_bultos
+
     pais_destino = fields.Many2one(
             'aduanas.paises',
             string='País de Destino',
@@ -12,23 +21,23 @@ class Exportacion(models.Model):
             'aduanas.puertos',
             string='Puerto Embarque',
         )
-    puerto_destino = fields.Many2one(
+    puerto_desembarque = fields.Many2one(
             'aduanas.puertos',
-            string='Puerto de Destino',
+            string='Puerto de Desembarque',
         )
-    total_bultos = fields.Float(
-            string="Total Bultos",
-        )
-    tipo_bulto = fields.Many2one(
-            'aduanas.tipos_bulto',
-            string='Tipo de Bulto',
-        )
-    total_items = fields.Float(
+    total_items = fields.Integer(
             string="Total Items",
         )
-    cantidad_bultos = fields.Float(
-            string="Cantidad de Bultos",
+    total_bultos = fields.Integer(
+            string="Total Bultos",
+            compute='total_bultos',
+            store=True,
         )
+    bultos = fields.One2many(
+        string="Bultos",
+        comodel_name="account.invoice.exportacion.bultos",
+        inverse_name="exportacion_id",
+    )
     via = fields.Many2one(
             'aduanas.tipos_transporte',
             string='Vía',
@@ -37,25 +46,25 @@ class Exportacion(models.Model):
             'delivery.carrier',
             string="Transporte",
         )
-    tara = fields.Float(
+    tara = fields.Integer(
             string="Tara",
         )
     uom_tara = fields.Many2one(
-            'aduanas.unidades_medida',
+            'product.uom',
             string='Unidad Medida Tara',
         )
     peso_bruto = fields.Float(
             string="Peso Bruto",
         )
     uom_peso_bruto = fields.Many2one(
-            'aduanas.unidades_medida',
+            'product.uom',
             string='Unidad Medida Peso Bruto',
         )
     peso_neto = fields.Float(
             string="Peso Neto",
         )
     uom_peso_neto = fields.Many2one(
-            'aduanas.unidades_medida',
+            'product.uom',
             string='Unidad Medida Peso Neto',
         )
     monto_flete = fields.Monetary(
@@ -79,7 +88,7 @@ class Exportacion(models.Model):
         )
     currency_id = fields.Many2one(
             'res.currency',
-            related='invoice_id',
+            related='invoice_id.currency_id',
             string='Moneda'
         )
 
@@ -92,3 +101,17 @@ class Exportacion(models.Model):
     def set_recepcion(self):
         if not self.pais_recepcion:
             self.pais_recepcion = self.pais_destino
+
+class Bultos(models.Model):
+    _name = 'account.invoice.exportacion.bultos'
+
+    tipo_bulto = fields.Many2one(
+            'aduanas.tipos_bulto',
+            string='Tipo de Bulto',
+        )
+    cantidad_bultos = fields.Integer(
+            string="Cantidad de Bultos",
+        )
+    exportacion_id = fields.Many2one(
+            'account.invoice.exportacion',
+        )
