@@ -12,7 +12,26 @@
                         <button name="crear_exportacion" type="object" string="Crear Exportación" />
                       </header>
                         <group>
-                          <field name="exportacion" />
+                          <field name="exportacion" editable="bottom" widget="one2many">
+                            <tree editable="top/bottom">
+                              <field name="pais_destino" />
+                              <field name="puerto_embarque" />
+                              <field name="puerto_desembarque" />
+                              <field name="via"/>
+                              <field name="carrier_id"/>
+                              <field name="tara"/>
+                              <field name="uom_tara" />
+                              <field name="peso_bruto" />
+                              <field name="uom_peso_bruto"/>
+                              <field name="peso_neto"/>
+                              <field name="uom_peso_neto"/>
+                              <field name="total_items"/>
+                              <field name="bultos"/>
+                              <field name="monto_flete"/>
+                              <field name="monto_seguro"/>
+                              <field name="pais_recepcion"/>
+                            </tree>
+                          </field>
                         </group>
                     </page>
                 </notebook>
