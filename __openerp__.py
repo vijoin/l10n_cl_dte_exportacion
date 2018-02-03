@@ -13,6 +13,7 @@
 Chile: Factura de Exportación Electrónica.
 """,
     'depends': [
+            'product',
             'stock',
             'delivery',
             'l10n_cl_dte',
@@ -29,7 +30,8 @@ Chile: Factura de Exportación Electrónica.
             'views/invoice_exportacion.xml',
             'views/invoice_view.xml',
             'views/payment_terms.xml',
-            'views/aduanas_unidades_medida.xml',
+            'views/product_uom.xml',
+            'views/stock_incoterms.xml',
             'security/ir.model.access.csv',
             'data/aduanas.formas_pago.csv',
             'data/aduanas.modalidades_venta.csv',
@@ -38,7 +40,8 @@ Chile: Factura de Exportación Electrónica.
             'data/aduanas.tipos_bulto.csv',
             'data/aduanas.tipos_carga.csv',
             'data/aduanas.tipos_transporte.csv',
-            'data/aduanas.unidades_medida.csv',
+            'data/product_uom.xml',
+            'data/stock.incoterms.csv',
     ],
     'installable': True,
     'application': True,

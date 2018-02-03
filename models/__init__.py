@@ -6,7 +6,8 @@ from . import aduanas_puertos
 from . import aduanas_tipos_bulto
 from . import aduanas_tipos_carga
 from . import aduanas_tipos_transporte
-from . import aduanas_unidades_medida
+from . import product_uom
 from . import invoice_exportacion
 from . import invoice
 from . import payment_terms
+from . import stock_incoterms
