@@ -54,6 +54,9 @@ class Exportacion(models.Model):
 
                 })]
 
+    def _es_nc_exportacion(self):
+        return self.sii_document_class_id.sii_code in [ 112 ]
+
     def _es_exportacion(self):
         if self.sii_document_class_id.sii_code in [ 110, 111, 112 ]:
             return True
@@ -115,11 +118,14 @@ class Exportacion(models.Model):
         expo = self.exportacion
         Aduana = collections.OrderedDict()
         #if not in 3,4,5
-        Aduana['CodModVenta'] = self.payment_term_id.forma_pago_aduanas.code
+        if self.payment_term_id:
+            Aduana['CodModVenta'] = self.payment_term_id.forma_pago_aduanas.code
+            mnt_clau = self.payment_term_id.with_context(currency_id=self.currency_id.id).compute(self.amount_total, date_ref=self.date_invoice)[0]
+            Aduana['TotClauVenta'] = round(mnt_clau[0][1], 2)
+        elif not self._es_nc_exportacion():
+            raise UserError("Debe Ingresar un Término de Pago")
         if self.incoterms_id:
             Aduana['CodClauVenta'] = self.incoterms_id.aduanas_code
-        mnt_clau = self.payment_term_id.with_context(currency_id=self.currency_id.id).compute(self.amount_total, date_ref=self.date_invoice)[0]
-        Aduana['TotClauVenta'] = round(mnt_clau[0][1], 2)
         if expo.via:
             Aduana['CodViaTransp'] = expo.via.code
         if expo.chofer_id:
