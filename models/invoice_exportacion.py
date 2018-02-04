@@ -13,6 +13,20 @@ class Exportacion(models.Model):
                 tot_bultos += b.cantidad_bultos
             r.total_bultos = tot_bultos
 
+    @api.depends('invoice_id.global_descuentos_recargos')
+    @api.onchange('invoice_id.global_descuentos_recargos')
+    def _get_tot_from_recargos(self):
+        for r in self:
+            mnt_seguro = 0
+            mnt_flete = 0
+            for gdr in r.invoice_id.global_descuentos_recargos:
+                if gdr.aplicacion == 'flete':
+                    mnt_flete += gdr.valor
+                elif gdr.aplicacion == 'seguro':
+                    mnt_seguro += gdr.valor
+            r.monto_flete = mnt_flete
+            r.monto_flete = mnt_seguro
+
     pais_destino = fields.Many2one(
             'aduanas.paises',
             string='País de Destino',
@@ -69,9 +83,11 @@ class Exportacion(models.Model):
         )
     monto_flete = fields.Monetary(
             string="Monto Flete",
+            compute='_get_tot_from_recargos',
         )
     monto_seguro = fields.Monetary(
             string="Monto Seguro",
+            compute='_get_tot_from_recargos',
         )
     pais_recepcion = fields.Many2one(
             'aduanas.paises',
