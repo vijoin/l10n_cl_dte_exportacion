@@ -25,7 +25,7 @@ class Exportacion(models.Model):
                 elif gdr.aplicacion == 'seguro':
                     mnt_seguro += gdr.valor
             r.monto_flete = mnt_flete
-            r.monto_flete = mnt_seguro
+            r.monto_seguro = mnt_seguro
 
     pais_destino = fields.Many2one(
             'aduanas.paises',
